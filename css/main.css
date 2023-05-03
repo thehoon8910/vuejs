@@ -1,0 +1,7 @@
+/* 트랜지션과 애니메이션 */
+.v-enter-active, .v-leave-active {
+    transition: opacity 1s;
+}
+.v-enter, .v-leave-to {
+    opacity: 0;
+}

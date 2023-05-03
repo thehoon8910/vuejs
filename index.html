@@ -5,12 +5,36 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0"></script>
-    <script src="js/main.js"></script>
+
+    <link rel="stylesheet" href="css/main.css"/>
 </head>
 <body>
     <div id="app">
-        {{message}}
+        <!-- 텍스트 바인딩 -->
+        <p>{{message}}</p>
+        <!-- 입력 양식과 동기화 -->
+        <input v-model="message">
+
+        <!-- 반복렌더링 -->
+        <ol>
+            <li v-for="item in list">{{item}}</li>
+        </ol>
+
+        <!-- 이벤트 사용하기 -->
+        <button v-on:click="handleClick">클릭 이벤트</button>
+
+        <!-- 조건분기 -->
+        <p v-if="show">조건 분기</p>
+
+        <!-- 트랜지션과 애니메이션 -->
+        <button v-on:click="show=!show">변경하기</button>
+        <transition>
+            <p v-if="show">트랜지션 이벤트</p>
+        </transition>
     </div>
+    
+    <script src="js/main.js"></script>
 </body>
 </html>
