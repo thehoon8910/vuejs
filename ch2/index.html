@@ -30,8 +30,6 @@
 
         <!-- DOM의 textContent 속성에 바인딩하기 -->
         <div :text-content.prop="message"></div>
-        <!-- DOM의 scrollTop 속성에 바인딩하기 -->
-        <div :scroll-top.pop="scroll"></div>
 
         <!-- 클릭으로 카운터 수 늘리기 -->
         <p>{{count}}번 클릭하였습니다.</p>
@@ -71,26 +69,26 @@
         <div v-else-if="type ==='B'">type는 B</div>
         <div v-else>모든 조건 불만족 시</div>
 
-        <!-- 요소를 반복해서 렌더링하기 -->
+        <!-- 요소를 반복해서 렌더링하기, 리스트에 요소 추가하기 -->
+        이름 <input v-model="name">
+        <button @click="doAdd">리스트 요소 추가하기</button>
         <ul>
-            <li v-for="item in list2" :key="item.id"> 
+            <!-- 반복 렌더링하면서 다양한 조건 적용하기 -->
+            <li v-for="(item, index) in list2" :key="item.id" v-if="item.hp" :class="{strong:item.hp > 300}"> 
                 <!-- 리스트를 변경할 때 요소의 식별과 효율적인 렌더링 처리를 위해서는 요소에 유니크한 key 속성을 설정하는 것이 권장 -->
                 <!-- 컴포넌트를 이용한 렌더링 또는 트랜지션을 할 때는 key 속성이 필수 -->
                 ID.{{item.id}} {{item.name}} HP.{{item.hp}}
-            </li>
-        </ul>
-
-        <!-- 반복 렌더링하면서 다양한 조건 적용하기 -->
-        <!-- 조건을 사용해서 클래스 조작 : hp 300 초과인 li에 .strong 부여 -->
-        <ul>
-            <li v-for="item in list2" :key="item.id" :class="{strong:item.hp > 300}">
-                ID.{{item.id}} {{item.name}} {{item.hp}}
+                <!-- 조건을 사용해서 클래스 조작 : hp 300 초과인 li에 .strong 부여 -->
                 <span v-if="item.hp>300" :style="{color:textColor}">li에 .strong 부여</span>
+                <!-- 삭제버튼 -->
+                <button @click="doRemove(index)">제거하기</button>
+                <!-- 버튼 누를 때마다 hp 10 하락 -->
+                <button @click="doAttack(index)">hp 10 하락</button>
             </li>
         </ul>
-
-    </div>
-    
+        
+        
+    </div>    
     <script src="js/main.js"></script>
 </body>
 </html>

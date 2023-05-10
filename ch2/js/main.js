@@ -34,12 +34,31 @@ var app = new Vue({
         , type : 'C'
     }
     , mounted : function(){
-        this.scroll = 100 // 요소의 스크롤양 조작하기
     }
     , methods : {
         // 버튼 클릭 시 이벤트 핸들러
         increment : function(){
             this.count+=1;
+        }
+        , doAdd : function(){
+            // 리스트 내부에서 가장 큰 ID 추출하기
+            var max = this.list2.reduce(function(a, b){
+                return a > b.id ? a : b.id
+            }, 0);
+            // 새로운 리스트 요소 추가하기
+            this.list2.push({
+                id : max+1 // 현재 최대 ID에 +1해서 유니크 ID로 사용
+                , name : this.name
+                , hp : 400
+            });
+        }
+        , doRemove : function(index){
+            // 삭제하기
+            this.list2.splice(index, 1);
+        }
+        , doAttack : function(index){
+            // hp 10 하락, hp 0 미만이 되면 해당 리스트 삭제됨
+            this.list2[index].hp -= 10;
         }
     }
 });

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0"></script>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <!-- Ch3. 이벤트와 입력 방식 -->
+    <!-- 이벤트핸들러 : 이벤트의 처리 내용, 핸들 : 이벤트 핸들러를 이벤트와 연결하는 것 -->
+    <div id="app">
+        <h1>마운트 요소 외의 이벤트 조작</h1>
+        <h2>스크롤 이벤트 추출</h2>
+        <!-- 아래의 내용을 모두 읽은 뒤 다시 확인 -->
+        <!-- window와 body에는 v-on이 먹히지 않아 addEventListener를 사용해야하지만 핸들러가 자동으로 제거되지 않으므로 불필요해지는 겨웅 사전에 훅을 해서 핸들러를 제거해야함 -->
+        <header :class="{compact:scrollY > 200}">
+            200px 이상 스크롤했으면 .compact 클래스 추가
+        </header>
+
+        <h1>메서드 이벤트 핸들러</h1>
+        <!-- 메서드 이벤트 핸들러 : 컴포넌트의 methods 옵션에 정의되어 있는 메서드 이름을 지정 -->
+        <button @click="handleClick">클릭</button>
+        
+        <!-- 인라인 메서드 핸들링 : 디렉티브의 값에 자바스크립트 식의 식을 직접 작성하는 것 -->
+        <!-- ex) <button @click="count++">클릭</button> -->
+
+        <h1>입력 양식 입력 추출하기</h1>
+        <input :value="message" @input="handleInput">
+
+        <h1>이벤트 장식자</h1>
+        <!-- 마우스 오른쪽 버튼을 눌렀을 때 -->
+        <button @click.right="handler">example</button>
+        <br>
+        <!-- 마우스 오른쪽 버튼을 눌렀을 때 컨텍스트 메뉴가 출력되지 않음 -->
+        <button @click.right.prevent="handler">example</button>
+        <br>
+        <!-- .stop : 이벤트 버블링 막음 -->
+        <div @click="handler('.stop')">
+            <p>.stop</p>
+            <a href="#top" @click.stop="handler('div2')">div2</a> <!-- 기본 이벤트를 막지 않았으므로 해시는 변경됨 -->
+        </div>
+        <hr>
+
+        <!-- .prevent : 링크 이동 혹은 submit 처럼 기본 처리를 막음 -->
+        <div @click="handler('.prevent')">
+            <p>.prevent</p>
+            <a href="#top" @click.prevent="handler('div2')">div2</a>
+        </div>
+        <hr>
+
+        <!-- .capture : 이벤트를 캡처 모드로 발생, 루트 요소에서 이벤트 타겟 요소까지 DOM 트리를 찾아 내려가는 캡처를 할 때 이벤트가 발생됨. = 버블링 모드의 이벤트보다 먼저 이벤트가 발생-->
+        <div @click.capture="handler('.capture1')">
+            <p>.capture1</p>
+            <div @click="handler('.capture2')">
+                <p>.capture2</p>
+                <div @click="handler('.capture3')">.capture3</div>
+            </div>
+        </div>
+        <hr>
+
+        <!-- .self : event.target 요소가 자기 자신일 때만 핸들러가 호출되게 함 -->
+        <!-- ex : <div class="overlay" @click.self="close"></div> 등 팝업의 배경을 클릭해서 닫는 경우 등에 사용 -->
+        
+        <h1>키 장식자</h1>
+        <!-- 키 장식자 : 특정 키 코드 입력만 핸들러를 호출하게 만들어 줌 -->
+        <!-- 인풋을 선택한 상태에서 엔터 키를 누를 때 핸들러를 호출하는 예시 2개 -->
+        <input @keydown.13="handler">
+        <input @keydown.enter="handler">
+
+        <h1>v-model 사용 방법</h1>
+        <input v-model="message">
+        <p>{{message}}</p>
+
+        <h1>텍스트 에리어</h1>
+        <textarea v-model="message2"></textarea>
+        <pre>{{message2}}</pre>
+
+        <h1>체크박스</h1>
+        <h2>하나의 요소 선택</h2>
+        <label>
+            <input type="checkbox" v-model="val" true-value="yes" false-value="no">{{val}}
+        </label>
+
+        <h2>여러 개 요소 선택</h2>
+        <label><input type="checkbox" v-model="val2" value="A">A</label>
+        <label><input type="checkbox" v-model="val2" value="B">B</label>
+        <label><input type="checkbox" v-model="val2" value="C">C</label>
+        <p>{{val2}}</p>
+
+        <h2>라디오 버튼</h2>
+        <label><input type="radio" value="a" v-model="val3">A</label>
+        <label><input type="radio" value="b" v-model="val3">B</label>
+        <label><input type="radio" value="c" v-model="val3">C</label>
+        <p>{{val3}}</p>
+
+        <h2>선택 박스</h2>
+        <h3>하나의 요소를 선택</h3>
+        <select v-model="val4">
+            <option disabled>선택해주세요.</option>
+            <option value="a">A</option>
+            <option value="b">B</option>
+            <option value="c">C</option>
+        </select>
+        <h3>여러 요소 선택</h3>
+        <select v-model="val5" multiple>
+            <option value="a">A</option>
+            <option value="b">B</option>
+            <option value="c">C</option>
+        </select>
+        <p>{{val5}}</p>
+
+        <h2>다른 입력 타입</h2>
+        <!-- 장식자는 .lazy(input 대신 change 이벤트 핸들링), .number(값을 숫자로 변환), .trim(값 양쪽의 쓸데없는 공백 제거)이 있음 -->
+        <input type="range" v-model.number="val6">{{val6}}
+    </div>
+    
+    <script src="js/main.js"></script>
+</body>
+</html>
