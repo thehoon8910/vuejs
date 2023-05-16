@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0"></script>
+
+    <link rel="stylesheet" href="css/main.css"/>
+</head>
+<body>
+    <h1 class="bTit">데이터 감시&가공</h1>
+    <div id="app">
+       <!-- 산출속성은 임의의 데이터를 리턴하는 함수를 computed 옵션에 정의함 -->
+
+       <h2 class="sTit">산출 속성 조합해서 사용</h2>
+       <p>X : {{halfPoint.x}}</p>
+       <p>Y : {{halfPoint.y}}</p>
+       <hr class="line">
+
+       <h2 class="sTit">게터와 세터</h2>
+       <!-- halfWidth를 입력 양식에 바인딩하기 -->
+       <input v-model.number="width">{{width}}
+       <br>
+       <input v-model.number="halfWidth">{{halfWidth}}
+       <!-- 산출 속성 halfWidth에 게터와 세터를 구현하면 width와 halfWidth가 양방향 흐름을 가지게 되어 항상 동기화됨 -->
+       <hr class="line">
+
+       <h2 class="sTit">산출속성 캐시 기능</h2>
+       <!-- 산출속성은 리액티브 데이터를 기반으로 결과를 캐시하고 캐시의 트리거가 되는 것은 리액티브 데이터 -->
+       <!-- 아래의 경우엔 산출속성 항상 값이 동일 -->
+       <ol>
+            <!-- 산출속성 -->
+            <li>{{computedData}}</li>
+            <li>{{computedData}}</li>
+            <!-- 메서드 -->
+            <li>{{methodsData()}}</li>
+            <li>{{methodsData()}}</li>
+       </ol>
+       <hr class="line">
+
+       <h2 class="sTit">리스트 필터링</h2>
+       <!-- 산출속성은 캐시 기능 때문에 원래 데이터에 변경이 있을 때까지 처리를 추가로 실행하지 않아 복잡한 처리를 하기에 적합 -->
+       <input v-model.number="budget">원 이하 필터링하기
+       <input v-model.number="limit">개의 결과 출력하기
+       <p>{{matched.length}}개 중에 {{limited.length}}개를 출력</p>
+       <ul>
+            <li v-for="item in limited" :key="item.id">
+                {{item.name}} {{item.price}}원
+            </li>
+       </ul>
+       <hr class="line">
+       
+       <h2 class="sTit">필터 사용법</h2>
+       <p>로컬필터 : 컴포넌트의 filters 옵션에 등록하면 특정 컴포넌트 내부에서만 사용 가능</p>
+       <p>{{ price|localeNum }}원</p>
+       <p>전역필터 : 범용적 필터는 전역 메서드 vue.fliter를 사용해서 등록</p>
+       <hr class="line">
+
+       <h2 class="sTit">여러 개의 필터를 연결해서 사용</h2>
+       <p>180도는 {{ 180|radian|round }} 라디안입니다.</p>
+       <hr class="line">
+
+       <h2 class="sTit">사용자 정의 디렉티브 사용법</h2>
+       <p>사용자 정의 디렉티브로 등록할 메서드 이름에 v-프리픽스 붙여서 사용</p>
+       <p>ex) &lt;div v-directive="value"&gt;ex&lt;/div&gt;</p>
+       <p>로컬 등록</p>
+       <input v-focus>
+       <hr class="line">
+
+       <h2 class="sTit">nextTick 사용법</h2>
+       <p>변경 후의 DOM 높이 확인</p>
+       <button @click="hList.push(hList.length+1)">추가</button>
+       <ul ref="hList">
+            <li v-for="item in hList">{{item}}</li>
+       </ul>     
+    </div>    
+    <script src="js/main.js"></script>
+</body>
+</html>
