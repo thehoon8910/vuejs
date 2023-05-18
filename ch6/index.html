@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0"></script>
+
+    <link rel="stylesheet" href="css/main.css"/>
+</head>
+<body>
+    <h1 class="bTit">트랜지션과 애니메이션</h1>
+    <div id="app">
+        <h2 class="sTit">기본적인 트랜지션 사용법</h2>
+        <button @click="show=!show">변경하기</button>
+        <transition appear>
+            <div v-show="show">트랜지션 요소</div>
+        </transition>
+        <p>transition 태그에 appear를 붙일 경우 렌더링할 때도 트랜지션이 적용됨</p>
+        <hr class="line">
+
+        <h2 class="sTit">트랜지션 클래스 이름과 프리픽스</h2>
+        <transition name="demo" appear>
+            <div v-if="show2">트랜지션 하고 싶은 요소, transition 태그에 name을 붙이면 됨</div>           
+        </transition>
+        <hr class="line">
+
+        <h2 class="sTit">단일 요소 트랜지션</h2>
+        <h3 class="ssTit">Enter와 Leave에서 서로 다른 스타일 정의하기</h3>
+        <div>
+            <button @click="show3=!show3">변경하기</button>
+        </div>
+        <transition name="enle" appear>
+            <div v-show="show3">Enter와 Leave에서 서로 다른 스타일 정의하기</div>
+        </transition>
+        <div class="gap"></div>
+
+        <h3 class="ssTit">여러 개의 요소 그룹화</h3>
+        <transition>
+            <div v-if="show" key="a">TRUE</div>
+            <div v-else key="b">FALSE</div>
+        </transition>
+        <div class="gap"></div>
+
+        <h3 class="ssTit">키의 변화로 트랜지션 발동</h3>
+        <div>
+            <button @click="count++">카운트 변경하기</button>
+        </div>
+        <transition name="countTr">
+            <div :key="count">{{ count }}</div>
+        </transition>
+        <hr class="line">
+
+        <h2 class="sTit">리스트 트랜지션</h2>
+        <h3 class="ssTit">Leave와 Move가 동시에 적용되는 경우</h3>
+        <ul>
+            <li>item1</li>
+            <li class="lm-leave-active lm-leave-to">item2</li>
+            <li class="lm-leave-active lm-move lm-leave-to">item3</li>
+        </ul>
+        <hr class="line">
+
+        <h2 class="sTit">SVG 트랜지션</h2>
+        <div>
+            <button @click="toggle=!toggle">SVG 트랜지션 변경</button>
+        </div>
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+            <transition name="svgTr">
+                <my-circle :fill="fill" :key="fill"></my-circle>
+            </transition>
+        </svg>
+    </div>
+    <script src="js/main.js"></script>
+</body>
+</html>
